@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bugs</title>
+  <link href="./libHtmls/clusterize.css" rel="stylesheet">
+  <script src="./libHtmls/clusterize.min.js"></script>
+  <link href="./libHtmls/index.css" rel="stylesheet">
+  <link rel="stylesheet" href="./libHtmls/bootstrap.css">
+  <script src="./libHtmls/jquery.min.js"></script>
+  <script src="./libHtmls/popper.min.js"></script>
+  <script src="./libHtmls/bootstrap.min.js"></script>
+  <script src="./libHtmls/jquery.min.js"></script>
+  <style>
+    .height {
+      height: 700px
+    }
+
+    .nav {
+      -webkit-app-region: drag;
+      /* background-color: #ffffff; */
+      /* style="background-color: #ffffff"  */
+    }
+
+    .detail {
+      /* box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25); */
+      position: absolute;
+      /* margin-top: 60%; */
+
+      /* padding-bottom: 33%; */
+      /* height: 0; */
+      /* overflow-y: auto; */
+    }
+
+
+
+    .detailNoBug {
+      overflow-y: auto;
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+      padding-left: 0.8rem;
+
+      /* border: 5px solid rgb(0, 0, 0); */
+      /* padding: 10px; */
+      /* background-color: #ffffff; */
+      /* style="background-color: #ffffff"  */
+    }
+
+    img {
+      margin-top: 199px;
+    }
+
+    img.smar {
+
+      position: absolute;
+      margin-top: 41%;
+      left: 25px;
+      width: 35%;
+      background-color: rgb(247, 248, 248);
+      border: 5px solid rgb(0, 0, 0);
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+      /* padding-left: 0.8rem; */
+
+      /* border: 5px solid rgb(0, 0, 0); */
+      /* padding: 10px; */
+      /* background-color: #ffffff; */
+      /* style="background-color: #ffffff"  */
+    }
+
+    img.smfr {
+      position: absolute;
+      width: 35%;
+      height: auto;
+      /* max-width: 100%; */
+      /* max-height: 100%; */
+      /* margin-top: 60px; */
+      left: 25px;
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+      border: 5px solid rgb(0, 0, 0);
+    }
+
+    img.bg {
+      width: 58%;
+      height: auto;
+      /* max-width: 100%; */
+      /* max-height: 100%; */
+      position: absolute;
+      /* margin-top: 60px; */
+      left: 39%;
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+      border: 5px solid rgb(0, 0, 0);
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+
+
+  <!-- <div class="box1"></div><img src="./Database/imgs_log/1_context.png" class="sm" alt="Bug Images"></div> -->
+  <!-- <img src="./Database/imgs_log/1_context.png" class="sm" alt="Bug Images">
+<img src="./Database/imgs_log/1.png" class="bg" alt="Bug Images"> -->
+
+
+
+
+
+  <!-- <div class="form-group detail">
+  <textarea class="form-control z-depth-1" id="Details" rows="3"></textarea>
+</div> -->
+
+
+  <!-- <div class="row align-items-center"> class="container-fluid" style="background-color: #d4d4d4"-->
+
+  <div id="Details">
+    <div class="detail">
+      <p>Loading</p>
+    </div>
+  </div>
+  <div id="image"></div>
+
+
+
+  <!-- <div class="jumbotron">
+    <h4 class="display-5">Bug Details</h4>
+    <p>Sub Type:AdditionalTests->AdditionalTests_Day3->DoubleTargets_Cars_Oncoming</p>
+    <p>Bug 29: ACC Target fluctuation - Good</p>
+      </div> -->
+
+
+
+
+
+  <script>
+
+    function typeNameChange(type) {
+        var valueReturn = '';
+        switch (type) {
+          case 'Roulage':
+            valueReturn = 'Prototype';
+            break;
+
+          case 'Simobj_Normal':
+            valueReturn = 'SimObject';
+            break;
+
+          case 'Simobj_Parfait':
+            valueReturn = 'SimObject - Perfect Sensors';
+            break;
+
+        }
+        return valueReturn;
+      }
+
+    function processForm() {
+      var parameters = location.search.substring(1).split("?");
+
+      console.log(decodeURIComponent(parameters));
+      return decodeURIComponent(parameters)
+      // console.log(parameters); 
+      // console.log(location.search.substring()); 
+      // var temp = parameters[0].split("=");
+      // x = unescape(temp[1]);
+      // document.getElementById('receive').innerHTML = x;
+      // console.log(x);
+    }
+
+    function parseOk() {
+      try {
+        data = JSON.parse(data);
+        return true;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    }
+
+
+    var imageDom = document.querySelector("#image");
+    var imageDetailDom = document.querySelector("#Details");
+
+
+    try {
+      imageIndex = localStorage.getItem("imageIndex");
+      data = localStorage.getItem("imageDetails");
+    } catch (e) {
+      data = processForm();
+      // console.log(data);
+    }
+    // console.log(localStorage.getItem("imageIndex")); 
+      function typeNameChange(type) {
+        var valueReturn = '';
+        switch (type) {
+          case 'Roulage':
+            valueReturn = 'Prototype';
+            break;
+
+          case 'Simobj_Normal':
+            valueReturn = 'SimObject';
+            break;
+
+          case 'Simobj_Parfait':
+            valueReturn = 'SimObject - Perfect Sensors';
+            break;
+
+          default:
+            valueReturn = type;
+            break;
+        }
+        return valueReturn;
+      }
+
+
+    if (data.img_context_path != "0" && parseOk()) {
+      dataDisplay = '<div class="container-fluid detail"><div class="alert alert-warning alert-dismissible fade show style="text-align: center;"" role="alert" style="text-align: center;"><p><strong>Scenario Variant:</strong> ' + typeNameChange(data.type) + '</p>' + '<p><strong>Module: </strong> ' + data.scenario_type+'->'+ data.sub_scenario_type + '</p><p><strong>Scenario ID: </strong>'+ data.id_senario+'</p><p><strong>Bug Type: </strong>' + data.description + '</p></div></div>'
+
+      // var pathImage = './Database/imgs_log/' + imageIndex;
+      var pathImage = './Database/imgs_log/' + data.ID;
+      console.log(data);
+      if (data.type == 'Prototype' && data.img_context_path.indexOf("_context_0") != -1) {
+        var imageDataContext = '<img src=\"' + pathImage + '_context_0.png\" class=\"smfr\" alt=\"Prototype Bug Images\"></div>';
+
+ 
+      } else if(data.type != 'Prototype' && data.img_context_path.indexOf("_context_0") != -1){
+      
+        var imageDataContext_0 = '<div><img src=\"' + pathImage + '_context_0.png\" class=\"smfr\" alt=\"Front Images\"><span style="color:white;margin-top: 14%;position: absolute;left: 35px;">Front</span></div>';
+        var imageDataContext_1 = '<div><img src=\"' + pathImage + '_context_1.png\" class=\"smar\" alt=\"Back Images\"><span style="color:white;margin-top: 42%;position: absolute;left: 35px;">Back</span></div>';
+        // console.log(imageDataContext_1);
+        // console.log(imageDataContext_0);
+        var imageDataContext = imageDataContext_0 + imageDataContext_1;
+      
+      }else{
+        var imageDataContext = '<img src=\"' + pathImage + '_context.png\" class=\"smfr\" alt=\"Bug Image\"></div>';
+
+      }
+
+
+      var imageData = '<img src=\"' + pathImage + '.png\" class=\"bg\" alt=\"Bug Images\"></div>';
+      // console.log(data.description);
+    
+    } else {
+      var pathImage = '';
+      var imageDataContext = '';
+      var imageData = '';
+
+      // dataDisplay = '<div class="alert alert-warning alert-dismissible fade show style="text-align: center;"" role="alert" style="text-align: center;"> <strong> No Bug ! </strong > </div> <div class="container"><div class=\"detailNoBug\">' + '<p>' + data.scenario_type + '</p>' + '<p>' + data.sub_scenario_type + '</p>' + '<p>' + data.version + '</p>' + '<p>' + data.date + '</p></div></div>'
+      dataDisplay = '<div class="alert alert-warning alert-dismissible fade show style="text-align: center;"" role="alert" style="text-align: center;"> <strong> No Bug ! </strong > </div>'
+    }
+
+    imageDom.innerHTML = imageDataContext + imageData;
+    imageDetailDom.innerHTML = dataDisplay;
+
+
+
+
+
+  </script>
+</body>
+</html>

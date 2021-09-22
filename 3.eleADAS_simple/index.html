@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head >
+    <meta charset="UTF-8">
+    <title>Renault-Altran ADAS Validation V2.0</title>
+
+    <link href="./node_modules/clusterize.js/clusterize.css" rel="stylesheet">
+    <script src="./node_modules/clusterize.js/clusterize.min.js"></script>
+    <link href="./render/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="./node_modules/jquery.min.js"></script>
+    <script src="./node_modules/popper.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <!-- <script src="./node_modules/bootstrap/js/dist/popover.js"></script> -->
+    <!-- <link rel="stylesheet" href="./node_modules/bootstrap.min.css">
+    <script src="./node_modules/jquery.min.js"></script>
+    <script src="./node_modules/popper.min.js"></script>
+    <script src="./node_modules/bootstrap.min.js"></script> -->
+    <style>
+        .dia {
+            margin-top: 60px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="col-1" nav>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span>Triage</span>
+            </button>
+            </div>
+            <div class="col-2" nav>
+                <button class="btn btn-danger" id="btnAllVersions" type="button">Start!</button>
+            </div>
+            <div class="col-2" nav>
+                <select class="custom-select" id="versions">
+                    <option value="1" selected>
+                        <==</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-lg btn-warning" id="getAll">Get</button>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-lg btn-outline-warning" id="btnEvolution">Evolution</button>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-lg btn-outline-warning" id="btnAnalyse">Analyses</button>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-outline-light" id="dialog">Init</button>
+            </div>
+
+                <div class="pos-f-t" >
+                    <hr>
+                    <div class="collapse" id="navbarToggleExternalContent" style="text-align: center;float: none;">
+                        <div class="row align-items-center" style="float: none;">
+                            <div class="col-3" >
+                                <label style="color: #e3f2fd;">1:choisir le type d'entrée</label>
+                                <select name="type" id="type" class="form-control">
+                                    <option value="1">Tous</option>
+                                    <option value="2">SimObject</option>
+                                    <option value="2">SimObj Perfect Sensor</option>
+                                    <option value="3">Roulage</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label style="color: #e3f2fd;">2:Type de scénario</label>
+                                <select name="scenerio[]" id="scenerio" multiple="" class="form-control">
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label style="color: #e3f2fd;">3:Type de module</label>
+                                <select name="module[]" id="module" multiple="" class="form-control">
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label style="color: #e3f2fd;">4:Type de bug</label>
+                                <select name="bugs[]" id="bugs" multiple="" class="form-control">
+                                </select>
+                            </div>
+                            <div class="col-lg-1">
+                                <button type="button" id="add" class="btn btn-outline-warning btn-lg">Go</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+        </nav>
+
+<div class="jumbotron jumbotron-fluid dia" >
+    <div class="container">
+        <h1 class="display-4">Renault-Altran ADAS Validation V2.0</h1>
+        <p class="lead">We are using Node.js
+        <script>document.write(process.versions.node)</script>, Chromium
+        <script>document.write(process.versions.chrome)</script>, and Electron
+        <script>document.write(process.versions.electron)</script>.</p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="container-fluid">
+    <div class="container" id="indice">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align: center;">
+            <strong>Bienvenue! </strong> Ajouter la condition tri
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="container">
+<div class="col">
+    <label >Historique</label>
+    <select name="result[]" id="result" multiple="" class="form-control">
+    </select>
+</div>
+    </div>
+<hr>
+</div>
+
+
+<div class="container-fluid" id="dataTable">
+</div>
+
+<script>
+
+
+
+
+
+
+
+
+//==>==>==>==>==>==>==>==>==>依赖<==<==<==<==<==<==<==<==
+
+        // require('./render/open.js');
+        require('./render/menuTrier.js');
+        require('./render/ipc_render');
+        // require('./render/subWin.js');
+        // require('./render/menu_right.js');
+
+
+
+
+
+        // require('./node_modules/clusterize.js/clusterize.js')
+
+        // load dependency
+        // var Clusterize = require('Clusterize');
+        
+        // $("#dataTable").change(function () {
+            // console.log($(this));
+
+            
+            // });
+
+        // ipcRenderer.on('msg', function (event, data, winID) {
+
+        //     console.log(data);
+        //     console.log(winID);
+        //     var firstWin = BrowserWindow.fromId(winID);
+
+        //     firstWin.webContents.send('msgback', ' 我也是 index.html 的数据 ');
+
+        // })
+
+
+        // var db;
+        //     var request = indexedDB.open("MyTestDatabase");
+        //     request.onerror = function (event) {
+        //         alert("Why didn't you allow my web app to use IndexedDB?!");
+        //     };
+        //     request.onsuccess = function (event) {
+        //         db = request.result;
+        //     };
+        // var Clusterize = require('./node_modules/clusterize.js/clusterize.js');
+
+    // JavaScript
+        // var data = ['<tr><td>data</td><td>data</td><td>data</td><td>data</td><td>data</td></tr>'];
+        // var data = ['<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>', '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>',  '<tr><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td><td>adsda</td></tr>'];
+
+                // create instance
+                // var clusterize = new Clusterize({
+                //     rows: data,
+                //     scrollId: 'scrollArea',
+                //     contentId: 'contentArea',
+                //       callbacks: {
+                //         clusterWillChange: function () { },
+                //         clusterChanged: function () { },
+                //         scrollingProgress: function (progress) { }
+                //     }
+                // });
+
+                    // < !-- < span class="dropdown-item-text" ></span > -->
+
+    // require('./render/renderer.js');
+    // require('./render/drag.js');
+    // require('./render/menu_render');
+
+
+</script>
+</body>
+</html>

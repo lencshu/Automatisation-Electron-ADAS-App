@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+<head >
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Renault-Altran ADAS Validation</title>
+
+    <link href="./libHtmls/clusterize.css" rel="stylesheet">
+    <script src="./libHtmls/clusterize.min.js"></script>
+    <link href="./libHtmls/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./libHtmls/bootstrap.css">
+    <script src="./libHtmls/jquery.min.js"></script>
+    <script src="./libHtmls/popper.min.js"></script>
+    <script src="./libHtmls/bootstrap.min.js"></script>
+    <script src="./libHtmls/jquery.min.js"></script>
+    <script src="./libHtmls/layer.js"></script>
+    <style>
+        .dia {
+            margin-top: 56px;
+        }
+    
+        .chart {
+            height: 1000px;
+            width: 100%;
+        }
+    
+        .suc {
+            height: 300px;
+            width: 100%;
+        }
+    
+        .pie {
+            height: 900px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+ <input type="text" id="imageIndice" style="display:none">
+
+<body> 
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="col-3" nav>
+            <button class="navbar-toggler active" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span>Selection</span>
+            </button>
+        </div>
+        <div class="col-6 nav">
+            <li class="nav-item dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Bugs Details
+                 </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="index.html">Developpement Evolution</a>
+                    <a class="dropdown-item" href="analyses.html">Statistics Analyses</a>
+                    <a class="dropdown-item active" href="details.html">Bugs Details</a>
+                </div> 
+            </li>
+        </div>
+        <!-- <div class="col-2" nav>
+            <button class="btn btn-lg btn-danger" id="btnAllVersions" type="button">Start!</button>
+        </div> -->
+        <div class="col-2" nav>
+            <select class="custom-select" id="versions">
+                <option value="1" selected>
+                    Loading...</option>
+            </select>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-lg btn-warning" id="getAll">Get</button>
+        </div>
+        
+        <div class="pos-f-t">
+            <hr>
+            <div class="collapse" id="navbarToggleExternalContent" style="text-align: center;float: none;">
+                <div class="row align-items-center" style="float: none;">
+                    <div class="col-2">
+                        <label style="color: #e3f2fd;">1: Pick a type</label>
+                        <select name="type" id="type" class="form-control">
+                            <option value="1">All</option>
+                            <option value="2">SimObject</option>
+                            <option value="2">SimObj Perfect Sensor</option>
+                            <option value="3">Prototype</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label style="color: #e3f2fd;">2: Pick a scenario</label>
+                        <select name="scenerio[]" id="scenerio" multiple="" class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label style="color: #e3f2fd;">3: Pick a module</label>
+                        <select name="module[]" id="module" multiple="" class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label style="color: #e3f2fd;">4: Pick a bug</label>
+                        <select name="bugs[]" id="bugs" multiple="" class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <button type="button" id="add" class="btn btn-outline-warning btn-lg">Go</button>
+                    </div>
+        
+                </div>
+            </div>
+            </nav>
+
+<div class="jumbotron jumbotron-fluid dia" >
+    <div class="container">
+        <h1 class="display-4">Renault-Altran ADAS Validation V2.0</h1>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="container">
+    <div class="row align-items-center">
+        <div class="col-sm">
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <button class="btn btn-danger" id="btnAllVersions" type="button">Connect the Database (Obligatoire) !!</button>
+                </div>
+                <select class="custom-select" id="versions">
+                    <option value="1" selected>
+                        <== Cliquer !!!</option>
+                </select>
+            </div>
+            </select>
+        </div>
+    </div> -->
+
+<!-- </div> -->
+<!-- <div class="container-fluid">
+    <div class="container" id="indice">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Bienvenue! </strong> Ajouter des conditions pour trier la base de données
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div> -->
+
+<div class="container">
+    <div class="col">
+        <div class="row align-items-center" style="margin-top:15px" id="indice">
+            <div class="alert alert-warning alert-dismissible fade show style="text-align: center;"" role="alert" style="text-align: center;">
+                <strong>Welcome! </strong> Add one condition of selection !
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+<div class="container">
+    <div class="col">
+        <label>History</label>
+        <select name="result[]" id="result" multiple="" class="form-control">
+        </select>
+    </div>
+</div>
+<hr>
+
+
+
+<div class="container-fluid" id="dataTable">
+</div>
+
+<script>
+
+
+//==>==>==>==>==>==>==>==>==>菜单选择<==<==<==<==<==<==<==<==
+
+    var trierIndice = document.querySelector('#indice');
+    // var allVersionsGet = document.querySelector('#btnAllVersions')
+    versionData = [];
+
+
+    json_All = [{ "id": 1, "title": "All" }, { "id": 2, "title": "AEB18" }, { "id": 3, "title": "AEB20" }, { "id": 4, "title": "AD1" }, { "id": 5, "title": "AD1evo" }, { "id": 6, "title": "ENVIRONMENT" }, { "id": 7, "title": "ENVIRONMENT AEB" }, { "id": 8, "title": "TRAJAM" }, { "id": 9, "title": "LSS" }, { "id": 10, "title": "ACC" }, { "id": 11, "title": "FusionAssessment" }, { "id": 12, "title": "TSAssessment" }, { "id": 13, "title": "VariousDriving" }];
+
+    json_simobj = [{ "id": 1, "title": "All" }, { "id": 2, "title": "AEB18" }, { "id": 3, "title": "AEB20" }, { "id": 4, "title": "AD1" }, { "id": 5, "title": "AD1evo" }, { "id": 6, "title": "ENVIRONMENT" }, { "id": 7, "title": "ENVIRONMENT AEB" }, { "id": 8, "title": "TRAJAM" }, { "id": 9, "title": "LSS" }, { "id": 10, "title": "ACC" }];
+
+    json_module = [{ "id": 0, "title": "All" }, { "id": 1, "title": "Path Prediction Ego" }, { "id": 2, "title": "Ego Tracking" }, { "id": 3, "title": "Lane Assignement" }, { "id": 4, "title": "Lane Fusion" }, { "id": 5, "title": "Path Prediction Object" }, { "id": 6, "title": "Object Tracking" }, { "id": 7, "title": "TSAD" }, { "id": 8, "title": "TSLSS" }, { "id": 9, "title": "TSAEB" }];
+
+
+    json_roulage = [{ "id": 0, "title": "All" }, { "id": 1, "title": "FusionAssessment" },
+    { "id": 2, "title": "TSAssessment" },
+    { "id": 3, "title": "VariousDriving" }];
+
+    // json_bugs = [{ "id": 0, "title": "All" }, { "id": 1, "title": "bug0" }, { "id": 2, "title": "bug1" }, { "id": 3, "title": "bug2" }, { "id": 4, "title": "bug3" }, { "id": 5, "title": "bug4" }, { "id": 6, "title": "bug5" }, { "id": 7, "title": "bug6" }, { "id": 8, "title": "bug7" }, { "id": 9, "title": "bug8" }, { "id": 10, "title": "bug9" }, { "id": 11, "title": "bug10" }, { "id": 12, "title": "bug11" }, { "id": 13, "title": "bug12" }, { "id": 14, "title": "bug13" }, { "id": 15, "title": "bug14" }, { "id": 16, "title": "bug15" }, { "id": 17, "title": "bug16" }, { "id": 18, "title": "bug17" }, { "id": 19, "title": "bug18" }, { "id": 20, "title": "bug19" }, { "id": 21, "title": "bug20" }, { "id": 22, "title": "bug21" }, { "id": 23, "title": "bug22" }, { "id": 24, "title": "bug23" }, { "id": 25, "title": "bug24" }, { "id": 26, "title": "bug25" }, { "id": 27, "title": "bug26" }, { "id": 28, "title": "bug27" }, { "id": 29, "title": "bug28" }, { "id": 30, "title": "bug29" }, { "id": 31, "title": "bug30" }, { "id": 32, "title": "bug31" }, { "id": 33, "title": "bug32" }, { "id": 34, "title": "bug33" }, { "id": 35, "title": "bug34" }, { "id": 36, "title": "bug35" }, { "id": 37, "title": "bug36" }, { "id": 38, "title": "bug37" }, { "id": 39, "title": "bug38" }, { "id": 40, "title": "bug39" }, { "id": 41, "title": "bug40" }, { "id": 42, "title": "bug41" }, { "id": 43, "title": "bug42" }];
+
+    json_bugs = [{ "id": 0, "title": "All"}, { "id": 43, "title": "New Issue" }, { "id": 1, "title":  "Bug N°0: Inappropriate Lines Number"}, { "id": 2, "title":  "Bug N°1: Fluctuation of Lines"}, { "id": 3, "title":  "Bug N°2:Incorrect Ego LaneAssignement"}, { "id": 4, "title":  "Bug N°3: Incorrect Objet LaneAssignement"}, { "id": 5, "title":  "Bug N°4: Disappearance of EgoPath"}, { "id": 6, "title":  "Bug N°5: Fluctuation of EgoPath"}, { "id": 7, "title":  "Bug N°6: The EgoPath does not follow the curves"}, { "id": 8, "title":  "Bug N°7: Disappearance of ObjectPath"}, { "id": 9, "title":  "Bug N°8: Inappropriate ObjectPath Modeling"}, { "id": 10, "title": "Bug N°9: Incorrect  Ego speed"}, { "id": 11, "title": "Bug N°10: Incorrect Object's speed"}, { "id": 12, "title": "Bug N°11: Double detected object"}, { "id": 13, "title": "Bug N°12: Undetected object by Fusion"}, { "id": 14, "title": "Bug N°13: False AEB detection"}, { "id": 15, "title": "Bug N°14: False ACC detection"}, { "id": 17, "title": "Bug N°16: Inappropriate CIPV /TTC indicator"}, { "id": 18, "title": "Bug N°17: Incorrect ACC Number [XX]"}, { "id": 20, "title": "Bug N°19: AEB Target fluctuation"}, { "id": 21, "title": "Bug N°20: PB Statut"}, { "id": 22, "title": "Bug N°21: False positive object detection"}, { "id": 23, "title": "Bug N°22: Inappropriate Lines modeling"}, { "id": 25, "title": "Bug N°24: Undetected AEB target"}, { "id": 26, "title": "Bug N°25: Undetected ACC target"}, { "id": 27, "title": "Bug N°26: Unseen detected object"}, { "id": 28, "title": "Bug N°27: Incorrect ObjectPath for static object"}, { "id": 29, "title": "Bug N°28: Fluctuation of object path"}, { "id": 30, "title": "Bug N°29: ACC Target fluctuation"}, { "id": 31, "title": "Bug N°30: Inappropriate object position"}, { "id": 32, "title": "Bug N°31: EgoPath is a circle-like"}, { "id": 33, "title": "Bug N°32: Object Fluctuation"}, { "id": 36, "title": "Bug N°35: Undetected object by sensors"}, { "id": 37, "title": "Bug N°36: Fusion Crash"}, { "id": 38, "title": "Bug N°37: Undetected object by sensors"}, { "id": 39, "title": "Bug N°38: Incorrect EgoPath"}, { "id": 40, "title": "Bug N°39: Bad Maneuver Prediction"}, { "id": 41, "title": "Bug N°40: Incorrect anchor point"}, { "id": 42, "title": "Bug N°41: Bad bounding box modeling"}];
+
+    json_roulage_module = [];
+
+setTimeout(function () {
+    // $("#btnAllVersions").click(function () {
+        // console.log(versionData);
+        var versions = $("#versions");
+        $("option", versions).remove();
+        $.each(versionData, function (index, array) {
+            var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+            versions.append(option);
+        });
+
+        var bugs = $("#bugs");
+        $("option", bugs).remove();
+        $.each(json_bugs, function (index, array) {
+            var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+            bugs.append(option);
+        });
+    // })
+}, 666);
+
+
+// function versionRender(versionData) {
+        
+//     }
+
+    
+
+
+    function getSelectScenerio() {
+        //获取后台json数据
+        // console.log($("#type").val())
+        var Fname = $("#type").val()
+        var scenerio = $("#scenerio");
+        var module = $("#module");
+
+        $("option", scenerio).remove(); //清空原有的选项
+        $("option", module).remove(); //清空原有的选项 
+        if (Fname == 1) {
+            $.each(json_All, function (index, array) {
+                var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+                scenerio.append(option);
+            });
+        }
+
+        if (Fname == 2) {
+            $.each(json_simobj, function (index, array) {
+                var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+                scenerio.append(option);
+            });
+        }
+
+        if (Fname == 3) {
+            $.each(json_roulage, function (index, array) {
+                var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+                scenerio.append(option);
+            });
+        }
+
+        $.each(json_module, function (index, array) {
+            var option = "<option value='" + array['id'] + "'>" + array['title'] + "</option>";
+            module.append(option);
+        });
+
+
+    };
+
+
+
+
+    // 选择1级菜单选项触发事件
+    $(function () {
+        getSelectScenerio();
+        $("#type").change(function () {
+            getSelectScenerio();
+        });
+    });
+
+    // 选择2级菜单选项触发事件
+    // $(function () {
+    //     // getSelectScenerio();
+    //     $("#scenerio").change(function () {
+    //         // getSelectScenerio();
+    //         console.log($("#scenerio").val()[0]);
+    //     });
+    // }); 
+
+    // 点击添加，获取选中选项的value和text
+    $(document).ready(function () {
+        $("#add").click(function () {
+            var result = $("#result");
+            $("#scenerio option:selected").each(function () {
+                // console.log($("#type option:selected").text() + ',' + $("#scenerio option:selected").text() + ',' + $("#module option:selected").text());
+                // var option = "<option value='" + $(this).val() + "' selected=\"selected\">" + $(this).text() + "</option>";
+                // $("option", result).remove();
+                var option = "<option value='" + $("#type option:selected").text() + ',' + $("#scenerio option:selected").text() + ',' + $("#module option:selected").text() + ',' + $("#bugs option:selected").text() + "' >" + $("#type option:selected").text() + '-->' + $("#scenerio option:selected").text() + '-->' + $("#module option:selected").text() + '-->' + $("#bugs option:selected").text() + "</option>";
+                result.append(option);
+                var dataSelected = dataAll_Select($("#versions option:selected").text(), $("#type option:selected").text(), $("#scenerio option:selected").text(), $("#module option:selected").text(), $("#bugs option:selected").text());
+                // console.log($("#bugs option:selected").text().split('°')[1].split(':')[0])
+                // console.log(dataSelected);
+                var numRes = creatTable(dataSelected, column);
+                trierIndice.innerHTML = '<div class="alert alert-primary alert-dismissible fade show" role="alert" style="text-align: center;"><strong>'+ numRes+'</strong> results for this condition of selection:  <strong>' + $("#type option:selected").text() + "->" + $("#scenerio option:selected").text() + "->" + $("#module option:selected").text() + "->" + $("#bugs option:selected").text() + '</strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+                //==========Go 之后直接显示结果
+                // ipcRenderer.send("main_receiver", $("#type option:selected").text() + "," + $("#scenerio option:selected").text() + "," + $("#module option:selected").text());
+            });
+        });
+    });
+
+
+ 
+
+
+        //==>==>==>==>==>==>==>==>==>Go按钮按下<==<==<==<==<==<==<==<==
+        // selectDom.onclick = function () {
+        //     var dataSelected = dataAll_Select($("#versions option:selected").text(), $("#type option:selected").text(), $("#scenerio option:selected").text(), $("#module option:selected").text(), $("#bugs option:selected").text());
+        //     // console.log(dataSelected);
+        //     var numRes = creatTable(dataSelected, column);
+
+        // }
+
+//==>==>==>==>==>==>==>==>==>ipcRenderer mod<==<==<==<==<==<==<==<==
+
+
+    //渲染进程给主进程发消息
+
+    var dataTable = document.querySelector('#dataTable')
+    var trierIndice = document.querySelector('#indice')
+    var allDom = document.querySelector('#getAll');
+    var selectDom = document.querySelector('#add');
+    var effaceDom = document.querySelector('#dialog');
+    var btnAnalyse = document.querySelector('#btnAnalyse');
+    var btnEvolution = document.querySelector('#btnEvolution');
+
+    //==>==>==>==>==>==>==>==>==>定义全局变量<==<==<==<==<==<==<==<==
+    var dataAll = null;
+    var column = [];
+
+    //显示全部数据
+    // var column = ["ID", "type", "scenario_type", "sub_scenario_type", "id_senario", "duration", "author", "date", "version", "n_iteration", "time", "bug_number", "description", "ego_distance", "img_path", "img_context_path", "creat_time", "count_in", "modifier_time", "path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "global_statuts"];
+
+    // var column_all = ["ID", "type", "scenario_type", "id_senario", "duration", "date", "version", "n_iteration", "time", "bug_number", "ego_distance", "path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "global_statuts"];
+
+    // var column_display = ["ID", "Scenario Variant", "Module", "Scenario ID", "Duration<br>(j:h:m:s.mm)", "Date<br>(d/m/y)", "version", "Iteration Step", "Occurrence Time<br>(j:h:m:s.mm)", "Bug Number", "ego_distance", "path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "Global<br>Statuts"];
+
+    var column_all = ["ID", "type", "scenario_type", "id_senario", "bug_number", "n_iteration", "date", "version", "duration", "time","path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "global_statuts"];
+    
+    var column_Module = ["ID", "type", "scenario_type", "id_senario", "bug_number", "n_iteration", "date", "version", "duration", "time"];
+
+    var column_display = ["ID", "Scenario Variant", "Module", "Scenario ID", "Bug<br>Number", "Iteration Step", "Date<br>(d/m/y)", "version", "Duration<br>(j:h:m:s.mm)", "Occurrence Time<br>(j:h:m:s.mm)", "path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "Global<br>Statuts"];
+
+    var rotateColumn = ['path_prediction_ego', 'ego_tracking', 'lane_assignement', 'lane_fusion', 'path_prediction_object', 'object_tracking', 'tsad', 'tslss', 'tsaeb'];
+    
+
+
+
+    //==>==>==>==>==>==>==>==>==>定义函数<==<==<==<==<==<==<==<==
+
+    function typeNameChange(type) {
+                var valueReturn = '';
+                switch (type) {
+                    case 'Roulage':
+                        valueReturn = 'Prototype';
+                        break;
+
+                    case 'Simobj_Normal':
+                        valueReturn = 'SimObject';
+                        break;
+
+                    // case 'Simobj_Parfait':
+                    //     valueReturn = 'SimObject - Perfect Sensors';
+                    //     break;
+                    default:
+                        valueReturn= type;
+                        break;
+
+                }
+                return valueReturn;
+            }
+
+
+
+    function findArray(Array, toFind) {
+        for (var i in Array) {
+            if (Array[i] == toFind) return true;
+        }
+        return false;
+    }
+
+
+    function MillisecondToDate(msd) {
+        var time = parseFloat(msd) / 1000;
+        
+        var numDem = new Number(time - parseInt(time));
+        numDem= numDem.toFixed(3);
+        numDem='.'+numDem*1000
+        //35.903
+        
+        if (null != time && "" != time) {
+            if (time > 60 && time < 60 * 60) {
+                // console.log(time);
+                time = parseInt(time / 60.0) + ":" + parseInt(time / 60.0 % 60) + numDem;
+                // time = parseInt(time / 60.0) + ":" + parseInt(time / 60.0 % 60) + (time - parseInt(time));
+            }
+            else if (time >= 60 * 60 && time < 86400) {
+                time = parseInt(time / 3600.0) + ":" + parseInt(time / 60.0 % 60) + ":" + parseInt(time % 60)+ numDem;
+                // time = parseInt(time / 3600.0) + ":" + parseInt(time / 60.0 % 60) + ":" + parseInt(time % 60)+ (time - parseInt(time));
+            }else if(time > 86400){
+                time = parseInt(time / 86400) + ":" + parseInt(time /3600 %24) + ":" + parseInt(time % 60) + ":" + parseInt(time % 60) + numDem;
+                // time = parseInt(time / 86400) + ":" + parseInt(time /3600 %24) + ":" + parseInt(time % 60) + ":" + parseInt(time % 60) + (time - parseInt(time));
+            }
+            else{
+                // console.log(time);
+                var time = new Number(parseFloat(time));
+                time = time.toFixed(3);
+                
+            }
+        }
+    // console.log(time);
+    return time;
+}
+
+    function creatTable(data, column) {
+        // console.log(data.length);
+        var numberCas=0;
+        if (data.length == 0) {
+            dataTable.innerHTML = '<div class="container"><div class="alert alert-warning alert-dismissible fade show" role="alert" style="text-align: center;"><strong>There is no case of this condition</strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>';
+        } else {
+            var datas = [];//new Array()
+            var datasHead = [];//new Array()
+            var datasBody = [];//new Array()
+            //自动生成表头
+            // datasHead.push("<table id=\"mytable\"><thead><tr>");    
+            datasHead.push("<table id=\"my_table\" class=\"table table-bordered table-striped  table-sm thead-light  table-hover\"><thead class=\"fixedThead\"><tr>");
+            for (var i in column)
+            // for (var i = 0; i < column.length ; i++)
+            {
+                // datasHead.push('<th style=\"transform: rotate(310deg)\">');
+                if (findArray(rotateColumn, column[i])) {
+                    // console.log("find")
+                    datasHead.push('<th class=\"rotate\"><div><span>');
+                    // data.push(',');
+                    datasHead.push(column[i]);
+                    // datasHead.push(column_display[i]);
+                    // console.log(column[i]);
+                    datasHead.push('</span></div></th>');
+                }
+                else {
+                    // console.log("find noting")
+                    datasHead.push('<th>');
+                    // datasHead.push('<th class=\"normal\">');
+                    // data.push(',');
+                    datasHead.push(column_display[i]);
+                    // datasHead.push(column[i]);
+                    // console.log(column[i]);
+                    datasHead.push('</th>');
+                }
+
+                // data.push(',');
+            }
+            datasHead.push("</tr></thead><tbody>");
+            // console.log(datasHead);
+            //组装表身
+            for (var i = data.length - 1; i >= 0; i--) {
+                datasBody.push("<tr>");
+                if (data[i]["author"]=="0") {
+                    continue;
+                }
+                data[i]["type"] = typeNameChange(data[i]["type"]);
+                if (data[i]["bug_number"]=="-2") {
+                data[i]["bug_number"] = "New";
+                }
+                numberCas++;
+                var num = new Number(parseFloat(data[i]["ego_distance"].replace(",", ".")));
+                data[i]["ego_distance"] = num.toFixed(2);
+                // console.log(data[i]["time"].split(':').length);
+                // var timeOccuChange=[];
+                // var timeDurationChange=[];
+                // console.log(data[i]["time"]);
+                try {
+                    var timeOccu=data[i]["time"].split(':');
+                    var timeDuration=data[i]["duration"].replace(/m/g,"").replace(/s/g,"").split(':');
+                    // console.log(timeOccu[0]+timeOccu[1]);
+                    data[i]["time"]=MillisecondToDate(timeOccu[0]+timeOccu[1]);
+                    data[i]["duration"]=MillisecondToDate(timeDuration[0]+timeDuration[1]);
+                    } catch (e) {
+                        // console.log('already done');
+                }
+                
+                // console.log(MillisecondToDate(timeOccu[0]+timeOccu[1]));
+
+
+                // if (x>1){
+                //     console.log(x);
+                // }
+                // if (y>2){
+                //     console.log(y);
+                // }
+
+                for (var k in column) {
+                    // console.log(data[i][k])
+                    if (data[i][column[k]] == 'r_ouge') {
+                        datasBody.push("<td class=\"bg-danger\">");
+                        // console.log("danger");
+                        datasBody.push('');
+
+                    } else if ((data[i][column[k]] == 'v_ert')) {
+                        datasBody.push("<td class=\"bg-success\">");
+                        // console.log("danger");
+                        datasBody.push('');
+                    }
+                    else {
+                        datasBody.push("<td>");
+                        datasBody.push(data[i][column[k]]);
+                    }
+                    datasBody.push("</td>");
+                    // dataTable.innerHTML = data[i].id_senario;
+                    // console.log(data[i].id_senario);
+                }
+                datasBody.push("</tr>");
+            }
+            datasBody.push("</tbody></table>");
+            // console.log(datas.join(''));
+            datas = datasHead.concat(datasBody);
+            // console.log(datas);
+            datasHead = null;
+            datasBody = null;
+            dataTable.innerHTML = datas.join("");
+            // $("#dataTable").remove();
+            // $('#dataTable').append(datas.join(""));
+        }
+    return numberCas;
+    }
+
+    function dataAll_Version() {
+        var jsonSelected = [];
+        // console.log($("#versions option:selected").text());
+        var versionSelect = $("#versions option:selected").text();
+        for (let i = 0; i < dataAll.length; i++) {
+            if (dataAll[i]["version"] == versionSelect) {
+                // console.log(dataAnalyse_all[i]);
+                jsonSelected.push(dataAll[i]);
+            }
+        }
+        // console.log(jsonSelected);
+        // console.log(versionSelect);
+        return jsonSelected;
+    }
+
+    function nomPageToDatabaseChange(name) {
+        var newName;
+        switch (name) {
+            // case 'SimObject':
+            //     newName = 'Simobj_Normal';
+            //     break;
+            case 'SimObj Perfect Sensor':
+                newName = 'Simobj_Parfait';
+                break;
+                
+            case 'Path Prediction Ego':
+                newName = 'path_prediction_ego';
+                break;
+            case 'Ego Tracking':
+                newName = 'ego_tracking';
+                break;
+            case 'Lane Assignement':
+                newName = 'lane_assignement';
+                break;
+            case 'Lane Fusion':
+                newName = 'lane_fusion';
+                break;
+            case 'Path Prediction Object':
+                newName = 'path_prediction_object';
+                break;
+            case 'Object Tracking':
+                newName = 'object_tracking';
+                break;
+            case 'TSAD':
+                newName = 'tsad';
+                break;
+            case 'TSLSS':
+                newName = 'tslss';
+                break;
+            case 'TSAEB':
+                newName = 'tsaeb';
+                break;
+            case 'ENVIRONMENT AEB':
+                newName = 'ENVIRONMENT_AEB';
+                break;
+            case 'AD1evo':
+                newName = 'AD1_EVO';
+                break;
+
+            default:
+                newName = name;
+        }
+        return newName;
+    }
+
+
+    function dataAll_Select(v, t, s, m, b) {
+        // var column_all = ["ID", "type", "scenario_type", "id_senario", "bug_number", "n_iteration", "date", "version", "duration", "time", "path_prediction_ego", "ego_tracking", "lane_assignement", "lane_fusion", "path_prediction_object", "object_tracking", "tsad", "tslss", "tsaeb", "global_statuts"];
+        var jsonSelected = [];
+        // var versionSelect = $("#versions option:selected").text();
+        // var typeSelect = $("#type option:selected").text();
+        // var scenarioSelect = $("#scenerio option:selected").text();
+        // var moduleSelect = $("#module option:selected").text();
+
+        var versionSelect = v;
+        var typeSelect = t;
+        var scenarioSelect = s;
+        var moduleSelect = m;
+        var bugSelect = b;
+
+        versionSelect = nomPageToDatabaseChange(versionSelect);
+        typeSelect = nomPageToDatabaseChange(typeSelect);
+        scenarioSelect = nomPageToDatabaseChange(scenarioSelect);
+        moduleSelect = nomPageToDatabaseChange(moduleSelect);
+        if (bugSelect!='All'&& bugSelect != 'New Issue'){
+            bugSelect = bugSelect.split('°')[1].split(':')[0];
+        }else if (bugSelect == 'New Issue') {
+            // bugSelect='-2';
+            bugSelect='New';
+        }
+        // bugSelect = bugSelect.replace(/bug/, "")
+
+        // console.log(bugSelect)
+        // console.log($("#versions option:selected").text());
+
+        // console.log(scenarioSelect);
+        // console.log(versionSelect);
+        // console.log(typeSelect);
+        // console.log(moduleSelect);
+        var co = 0;
+        for (let i = 0; i < dataAll.length; i++) {
+            if (dataAll[i]["version"] == versionSelect) {
+                // console.log(dataAll[i]);
+                if ((dataAll[i]["type"] == typeSelect) || (typeSelect == 'All')) {
+                    // console.log(dataAll[i]);
+                    if ((dataAll[i]["scenario_type"] == scenarioSelect) || (scenarioSelect == 'All')) {
+                        // console.log(moduleSelect);
+                        // console.log(dataAll[i][moduleSelect]);
+                        // console.log(dataAll[i]);
+                        // console.log(dataAll[i][moduleSelect]);
+                        if ((dataAll[i]["bug_number"] == bugSelect) || (bugSelect == 'All')) {
+                            if ((dataAll[i][moduleSelect] == 'r_ouge') && (!(moduleSelect == 'All'))) {
+                                // console.log(dataAll[i]);
+                                jsonSelected.push(dataAll[i]);
+                                co = 1;
+                            } else if (moduleSelect == 'All') {
+                                // console.log(dataAll[i]);
+                                jsonSelected.push(dataAll[i]);
+                                column = column_all;
+                            }
+                        }
+                    }
+                }
+            }
+            // console.log(jsonSelected);
+            // console.log(versionSelect);
+        }
+        if (co == 1) {
+            column_Module.push(moduleSelect);
+            // column_Module.push("global_statuts");
+            column = column_Module;
+        }
+
+        return jsonSelected;
+
+    }
+
+
+        //==>==>==>==>==>==>==>==>==>结果选中历史记录重现<==<==<==<==<==<==<==<==
+
+        $("#result").change(function () {
+            // console.log($(this).val()[0].split(",")[3].charAt(6));
+
+            var dataSelected = dataAll_Select($("#versions option:selected").text(), $(this).val()[0].split(",")[0], $(this).val()[0].split(",")[1], $(this).val()[0].split(",")[2], $(this).val()[0].split(",")[3]);
+            var numRes = creatTable(dataSelected, column);
+            trierIndice.innerHTML = '<div class="alert alert-primary alert-dismissible fade show" role="alert" style="text-align: center;"><strong>' + numRes + '</strong> results for this condition of selection:  <strong>' + $(this).val()[0].split(",").join("-->") + '</strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+            // console.log($(this).val()[0]);
+            
+            // ipcRenderer.send("main_receiver", $(this).val()[0]);
+        });
+        // console.log($("#type option:selected").text() + "," + $("#scenerio option:selected").text() + "," + $("#module option:selected").text());
+
+
+
+
+
+
+    //==>==>==>==>==>==>==>==>==>All按钮按下<==<==<==<==<==<==<==<==
+    allDom.onclick = function () {
+        //触发广播
+        // dataTable.innerHTML ='';
+        // ipcRenderer.send('main_receiver', 'this is rendereraaa');
+        // console.log(dataAll[0]['version']);
+        var numRes=creatTable(dataAll_Version(), column_all);
+        trierIndice.innerHTML = '<div class="alert alert-primary alert-dismissible fade show" role="alert" style="text-align: center;"><strong>' + numRes +'</strong> results for this condition of selection:  <strong> All ! </strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    }
+
+    //==>==>==>==>==>==>==>==>==>Analyse窗口交互<==<==<==<==<==<==<==<==
+
+    // btnAnalyse.onclick = function () {
+    //     // console.log('analyseWindows')
+    //     // ipcRenderer.send("analyseWindows", $("#versions option:selected").text());
+    //     console.log($("#versions option:selected").text());
+
+    //     // ipcRenderer.send('versionSelect', $("#versions option:selected").text());
+    // }
+
+    //==>==>==>==>==>==>==>==>==>Evolution窗口交互<==<==<==<==<==<==<==<==
+
+    // btnEvolution.onclick = function () {
+    //     // console.log('analyseWindows')
+    //     // ipcRenderer.send("evolutionWindows", $("#versions option:selected").text());
+    //     console.log($("#versions option:selected").text());
+
+    //     // ipcRenderer.send('versionSelect', $("#versions option:selected").text());
+    // }
+
+    //==>==>==>==>==>==>==>==>==>图片点击操作<==<==<==<==<==<==<==<==
+
+    // var imageIndex;
+    // var imageIndexDom = document.querySelector('#imageIndice');
+
+    // var { ipcRenderer } = require('electron');
+    var dataTableDom = document.querySelector("#dataTable");
+    $("#dataTable").bind('DOMNodeInserted', function (e) {
+        // alert('element now contains: ' + $(e.target).html()); 
+        $("#dataTable tr").click(function () {
+            // $(this).addClass('selected').siblings().removeClass('selected');
+            // $(this).addClass('table-info').siblings().removeClass('table-info');
+            var value = $(this).find('td:first').html();
+            // alert(value);
+            // console.log(value);
+            // alert(path.resolve('./'));
+            // imageID=value;     
+            // console.log($("#dataTable tr"));
+            // const modalPath = path.resolve('C:/Users/gli/Documents/Dropbox/Altran/3.eleADAS_simple/modal.html');
+            // win.on('blur', function () { win = null; win.close()})
+            // console.log(value);
+            if (value != null && value != undefined) {
+                 try {
+                    localStorage.setItem("imageIndex", value);
+                     localStorage.setItem("imageDetails", JSON.stringify(dataAll[value - 1]));
+                    //  console.log(JSON.stringify(dataAll[value - 1]));
+                    var dataUrl='';
+                    } catch (e) {
+                    // alert('images only can be seen by using Chrome or Firefox');
+                    var dataUrl=encodeURIComponent(JSON.stringify(dataAll[value - 1]));
+                }
+                
+                //iframe层-父子操作
+                // if (dataAll[value - 1]["author"] != "0") {
+                        var inDex = layer.open({
+                        type: 2,
+                        area: ['88%', '99%'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        shadeClose: true,
+                        skin: 'layui-layer-rim', //加上边框
+                        title: 'Bug Details',
+                        content: 'images.html?'+ dataUrl ,
+                        // content: 'images.html?'+ value,
+                        // success: function (layero, index) {
+                        // var obj = layero.find("iframe")[0].contentWindow;//获取子窗体对象
+                        // var body = layer.getChildFrame('body', index);
+                        // body.contents().find("#Details").val('<p>AEB18</p>');
+                        // console.log(layero, index);
+                        // var body = layer.getChildFrame('body', index);
+                        // body.find(".Details").val(10);
+                        // var bugDetails = $("#image"); 
+                        // }
+
+                        // full: function (index) {
+                        //         layer.full(inDex);
+                        //     },
+                    });
+                // } else {
+                //     layer.open({
+                //         type: 2,
+                //         area: ['500px', '300px'],
+                //         fixed: false, //不固定
+                //         maxmin: true,
+                //         shadeClose: true,
+                //         title: 'Bug Details',
+                //         content: 'images.html?'+ dataUrl,
+                //     });
+                // }
+
+            }
+            // win.loadURL(modalPath)
+
+        });
+    });
+
+
+    //==>==>==>==>==>==>==>==>==>重置表格<==<==<==<==<==<==<==<==
+    // effaceDom.onclick = function () {
+    //     remote.dialog.showMessageBox({
+    //         type: 'info',
+    //         title: 'bug',
+    //         message: 'Effacer All ?',
+    //         buttons: ['ok', 'no']
+    //     }, function (index) {
+    //         if (index == 0) {
+    //             dataTableDom.innerHTML = '';
+    //         }
+    //         console.log(index);
+    //     });
+    // }
+
+
+
+
+
+
+//==>==>==>==>==>==>==>==>==>数据获取<==<==<==<==<==<==<==<== ;
+
+</script>
+</body>
+</html>

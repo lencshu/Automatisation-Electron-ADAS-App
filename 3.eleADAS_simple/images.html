@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Bugs</title>
+    <link href="./node_modules/clusterize.js/clusterize.css" rel="stylesheet">
+    <script src="./node_modules/clusterize.js/clusterize.min.js"></script>
+    <link href="./render/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="./node_modules/jquery.min.js"></script>
+    <script src="./node_modules/popper.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<style>
+
+  div.height 
+  {
+  height: 400px
+  }
+  .nav
+  {
+  -webkit-app-region: drag;
+  /* background-color: #ffffff; */
+  /* style="background-color: #ffffff"  */
+  }
+
+  .detail
+  {
+   position: absolute;
+   margin-top: 35%;
+   left: 25px;
+   width: 35%;
+   background-color: rgb(247, 248, 248);
+   overflow-y: auto;
+   box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+   padding-left: 0.8rem;
+
+   /* border: 5px solid rgb(0, 0, 0); */
+   /* padding: 10px; */
+  /* background-color: #ffffff; */
+  /* style="background-color: #ffffff"  */
+  }
+  .detailNoBug {
+      overflow-y: auto;
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+      padding-left: 0.8rem;
+
+      /* border: 5px solid rgb(0, 0, 0); */
+      /* padding: 10px; */
+      /* background-color: #ffffff; */
+      /* style="background-color: #ffffff"  */
+    }
+
+  .he {
+margin-top: 60px;
+    }
+
+  img.sm {
+width: 35%;
+height: auto;
+max-width: 100%;
+max-height: 100%;
+position: absolute;
+margin-top: 60px;
+left: 25px;
+border: 5px solid rgb(0, 0, 0);
+}
+
+  img.bg {
+width: 58%;
+height: auto;
+max-width: 100%;
+max-height: 100%;
+position: absolute;
+margin-top: 60px;
+left: 39%;
+border: 5px solid rgb(0, 0, 0);
+}
+
+</style>
+
+
+</head>
+<body>
+
+
+<nav class = "navbar navbar-dark bg-dark fixed-top">
+  <div class="col-10 nav"><a class="navbar-brand nav" href="#">Bug Details</a></div>
+  <div class="col-2" >
+        <a class="btn btn-primary btn-sm pull-right" href="javascript:maxi()" role="button" aria-pressed="true">&#9634;</a>
+    <a class="btn btn-danger btn-sm pull-right" href="javascript:hideWin()" role="button" aria-pressed="true">×</a>
+  </div>
+</nav>
+
+
+<!-- <div class="box1"></div><img src="./Database/imgs_log/1_context.png" class="sm" alt="Bug Images"></div> -->
+<!-- <img src="./Database/imgs_log/1_context.png" class="sm" alt="Bug Images">
+<img src="./Database/imgs_log/1.png" class="bg" alt="Bug Images"> -->
+
+
+  <div id="Details">
+    <div class="detail">
+      <p>Loading</p>
+    </div>
+  </div>
+
+<!-- <div class="form-group detail">
+  <textarea class="form-control z-depth-1" id="Details" rows="3"></textarea>
+</div> -->
+
+
+    <!-- <div class="row align-items-center"> class="container-fluid" style="background-color: #d4d4d4"-->
+
+
+<div id="image">
+</div>
+  
+
+
+  <!-- <div class="jumbotron">
+    <h4 class="display-5">Bug Details</h4>
+    <p>Sub Type:AdditionalTests->AdditionalTests_Day3->DoubleTargets_Cars_Oncoming</p>
+    <p>Bug 29: ACC Target fluctuation - Good</p>
+      </div> -->
+
+ 
+
+
+  
+  <script>
+    const path = require('path');
+    const { BrowserWindow } = require('electron').remote;
+    var imageDom = document.querySelector("#image");
+    var imageDetailDom = document.querySelector("#Details");
+        
+    function hideWin() {
+      imageWin = BrowserWindow.getFocusedWindow();
+      imageWin.hide()
+    }
+    function maxi() {
+        imageWin = BrowserWindow.getFocusedWindow();
+        if (imageWin.isMaximized()) {
+          imageWin.restore();
+        } else {
+          imageWin.maximize();
+        }
+      }
+
+
+
+
+
+    var { ipcRenderer } = require('electron');
+    // ipcRenderer.on('imageID', function (event, data) {
+    //   // const dbPath = path.resolve(path_database)
+    //   // console.log(data);
+
+    //   var pathImage='./Database/imgs_log/'+data;
+    //   var imageDataContext = '<img src=\"' + pathImage + '_context.png\" class=\"sm\" alt=\"Bug Images\"></div>';
+    //   var imageData = '<img src=\"' + pathImage + '.png\" class=\"bg\" alt=\"Bug Images\"></div>';
+    //   imageDom.innerHTML=imageDataContext + imageData;
+    // })
+
+
+    ipcRenderer.on('imageDetails', function (event, data,ImageId) {
+        // const dbPath = path.resolve(path_database)
+        // console.log(data);
+        // console.log(ImageId);
+      var imageIndex= ImageId;
+
+      if (data.author != "0") {
+        dataDisplay = '<div class=\"detail\"><p>' + data.scenario_type + '</p>' + '<p>' + data.sub_scenario_type + '</p>' + '<p>' + data.version + '</p>' + '<p>' + data.author + '</p>' + '<p>' + data.date + '</p>' + '<p>' + data.description + '</p></div>'
+
+        var pathImage = './Database/imgs_log/' + imageIndex;
+        var imageDataContext = '<img src=\"' + pathImage + '_context.png\" class=\"sm\" alt=\"Bug Images\"></div>';
+        var imageData = '<img src=\"' + pathImage + '.png\" class=\"bg\" alt=\"Bug Images\"></div>';
+        // console.log(data.description);
+      } else {
+        var pathImage = '';
+        var imageDataContext = '';
+        var imageData = '';
+
+        dataDisplay = '<div class="alert alert-warning alert-dismissible fade show he style="text-align: center;"" role="alert" style="text-align: center;"> <strong> No Bug Data! </strong > </div> <div class="container"><div class=\"detailNoBug\">' + '<p>' + data.scenario_type + '</p>' + '<p>' + data.sub_scenario_type + '</p>' + '<p>' + data.version + '</p>' + '<p>' + data.date + '</p></div></div>'
+      }
+
+      imageDom.innerHTML = imageDataContext + imageData;
+      imageDetailDom.innerHTML = dataDisplay;
+
+        // dataDisplay='<p>'+ data.scenario_type+'</p>'+'<p>'+ data.sub_scenario_type+'</p>'+'<p>'+ data.version+'</p>'+'<p>'+ data.author+'</p>'+ '<p>'+ data.date+'</p>' + '<p>' + data.description + '</p>'
+        // // console.log(data.description);
+        // imageDetailDom.innerHTML = dataDisplay;
+      })
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
+

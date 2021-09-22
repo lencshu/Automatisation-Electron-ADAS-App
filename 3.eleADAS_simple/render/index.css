@@ -1,0 +1,98 @@
+        /* Border styles */
+         /* .fixedThead{
+			display: block;
+			width: 100%;
+    }  */
+
+    
+
+    .mright{
+      margin-right: 30px;
+    }
+
+th.rotate {
+  /* Something you can count on */
+  height: 140px;
+  white-space: nowrap;
+}
+
+th.rotate > div {
+  transform: 
+    /* Magic Numbers */
+    translate(25px, 51px)
+    /* 45 is really 360 - 45 */
+    rotate(315deg);
+  width: 30px;
+}
+th.rotate > div > span {
+  border-bottom: 1px solid rgb(54, 54, 54);
+  /* padding: 5px 10px; */
+}
+   .table-header-rotated {
+  border-collapse: collapse;
+  .csstransforms & td {
+    width: 30px;
+  }
+  .no-csstransforms & th {
+    /* padding: 5px 10px; */
+  }
+  td {
+    text-align: center;
+    padding: 10px 5px;
+    border: 1px solid #ccc;
+  }
+  .csstransforms & th.rotate {
+    /* height: 140px; */
+    white-space: nowrap;
+    // Firefox needs the extra DIV for some reason, otherwise the text disappears if you rotate 
+    > div {
+      transform: 
+        // Magic Numbers
+        translate(25px, 51px)
+        // 45 is really 360-45
+        rotate(315deg);
+      /* width: 30px; */
+    }
+    > div > span {
+      border-bottom: 1px solid #ccc;
+      /* padding: 5px 10px; */
+    }
+  }
+  /* th.row-header {
+    padding: 0 10px;
+    border-bottom: 1px solid #ccc;
+  } */
+}
+
+th.normal {
+    border:1px solid #454546;
+}
+
+        /* #mytable thead, #mytable th {
+        border-top-width: 2px;
+        border-top-style: solid;
+        border-top-color: rgb(223, 196, 255);
+        } */
+        #mytable {
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: rgb(211, 202, 221);
+        }
+
+        /* Padding and font style */
+        #mytable td, #mytable th {
+        padding: 5px 10px;
+        font-size: 14px;
+        font-family: Verdana;
+        color: rgb(0, 0, 0);
+        }
+        #mytable td{
+            border:1px solid #454546;
+        }
+        /* Alternating background colors */
+        #mytable tr:nth-child(even) {
+        background: rgb(211, 211, 211)
+        }
+        #mytable tr:nth-child(odd) {
+        background: #FFF
+        }

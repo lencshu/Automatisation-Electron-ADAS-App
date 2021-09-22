@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>L'evolution du développement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./node_modules/clusterize.js/clusterize.css" rel="stylesheet">
+    <script src="./node_modules/clusterize.js/clusterize.min.js"></script>
+    <link href="./render/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="./node_modules/jquery.min.js"></script>
+    <script src="./node_modules/popper.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./node_modules/echarts/dist/echarts_min.js"></script>
+    <script src="./node_modules/echarts/dist/new/dataTool.min.js"></script>
+    <script src="./node_modules/echarts/dist/new/ecStat.min.js"></script>
+    <script src="./node_modules/echarts/dist/new/simplex.js"></script>
+    <script src="./node_modules/echarts/dist/echarts-gl.min.js"></script>
+    <script src="./node_modules/echarts/dist/extension/bmap.min.js"></script>
+    <script src="./node_modules/echarts/map/js/china.js"></script>
+    <script src="./node_modules/echarts/map/js/world.js"></script>
+    <style>
+        .nav {
+            -webkit-app-region: drag;
+            /* background-color: #ffffff; */
+            /* style="background-color: #ffffff"  */
+        }
+ 
+        .dia {
+            margin-top: 60px;
+        }
+
+        .chart {
+            height: 600px;
+            width: 100%;
+        }
+        .suc {
+            height: 300px;
+            width: 100%;
+        }
+        .pie {
+            height: 900px;
+            width: 100%;
+        }
+        .containerDiagram {
+            position: relative;
+            left: 5%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="col-10 nav">
+            <a class="navbar-brand nav" href="#">L'evolution du développement</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-primary btn-sm pull-right" href="javascript:mini()" role="button" aria-pressed="true">&#9722;</a>
+            <a class="btn btn-warning btn-sm pull-right" href="javascript:maxi()" role="button" aria-pressed="true">&#9634;</a>
+            <a class="btn btn-danger btn-sm pull-right" href="javascript:hideWin()" role="button" aria-pressed="true">×</a>
+        </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid dia">
+        <div class="container" >
+            <h1 class="display-4">Evolution of Success Rate</h1>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                    aria-valuemax="100" style="width: 100%"></div>
+            </div>
+                <div id="disrgram" class="suc"></div>
+        </div>
+    </div>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Prototype</h1>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                    aria-valuemax="100" style="width: 100%"></div>
+            </div>
+            </div>
+    </div>
+
+    <!-- charts -->
+<div class="container-fluid">
+    <div id="diagram" class="chart"></div>
+    <hr>
+    <div id="dibgram" class="chart"></div>
+    <hr>
+    <div id="dicgram" class="chart"></div>
+    <hr>
+    <div id="didgram" class="chart"></div>
+    <!-- <hr>
+    <div id="diegram" class="chart"></div> -->
+</div>
+    <hr>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+        <h1 class="display-4">SimObject</h1>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+        </div>
+    </div>
+
+    <!-- charts -->
+<div class="container-fluid">
+    <div id="difgram" class="chart"></div>
+    <hr>
+    <div id="diggram" class="chart"></div>
+    <hr>
+    <div id="dihgram" class="chart"></div>
+    <hr>
+    <div id="diigram" class="chart"></div>
+    <!-- <hr>
+    <div id="dijgram" class="chart"></div> -->
+</div>
+    <hr>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+        <h1 class="display-4">SimObject - Perfect Sensors</h1>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                aria-valuemax="100" style="width: 100%"></div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- charts -->
+<div class="container-fluid">
+    <div id="dikgram" class="chart"></div>
+    <hr>
+    <div id="dilgram" class="chart"></div>
+    <hr>
+    <div id="dimgram" class="chart"></div>
+    <hr>
+    <div id="dingram" class="chart"></div>
+    <!-- <hr>
+    <div id="diogram" class="chart"></div> -->
+</div>
+
+
+
+
+    <script>
+
+    //==>==>==>==>==>==>==>==>==>网页依赖<==<==<==<==<==<==<==<==
+
+        var { ipcRenderer } = require('electron');
+        const { BrowserWindow } = require('electron').remote;
+
+        function hideWin() {
+            imageWin = BrowserWindow.getFocusedWindow();
+            imageWin.hide()
+        }
+        function maxi() {
+            imageWin = BrowserWindow.getFocusedWindow();
+            if (imageWin.isMaximized()) {
+                imageWin.restore();
+            } else {
+                imageWin.maximize();
+            }
+        }
+        function mini() {
+            imageWin = BrowserWindow.getFocusedWindow();
+            imageWin.minimize();
+        }
+    //==>==>==>==>==>==>==>==>==>定义函数<==<==<==<==<==<==<==<==
+    var dataAnalyse_all = [];
+    var version_all = [];
+    var succRate = {};
+    var dataToUse = {};
+    var indiceAll = ['Roulage', 'Roulage_BugScenario', 'Roulage_BugHeure', 'Roulage_BugKm', 'Roulage_BugBugs', 'Simobj_Normal', 'Simobj_Normal_BugScenario', 'Simobj_Normal_BugHeure', 'Simobj_Normal_BugKm', 'Simobj_Normal_BugBugs', 'Simobj_Parfait', 'Simobj_Parfait_BugScenario', 'Simobj_Parfait_BugHeure', 'Simobj_Parfait_BugKm', 'Simobj_Parfait_BugBugs'];
+        // var indiceAll = ['Roulage', 'Roulage_BugScenario', 'Roulage_BugHeure', 'Roulage_BugKm', 'Roulage_BugBugs', 'Simobj_Normal', 'Simobj_Normal_BugScenario', 'Simobj_Normal_BugHeure', 'Simobj_Normal_BugKm', 'Simobj_Normal_BugBugs', 'Simobj_Parfait', 'Simobj_Parfait_BugScenario', 'Simobj_Parfait_BugHeure', 'Simobj_Parfait_BugKm', 'Simobj_Parfait_BugBugs', 'Roulage', 'Roulage_BugScenario', 'Roulage_BugHeure', 'Roulage_BugKm', 'Roulage_BugBugs', 'Simobj_Normal', 'Simobj_Normal_BugScenario', 'Simobj_Normal_BugHeure', 'Simobj_Normal_BugKm', 'Simobj_Normal_BugBugs', 'Simobj_Parfait', 'Simobj_Parfait_BugScenario', 'Simobj_Parfait_BugHeure', 'Simobj_Parfait_BugKm', 'Simobj_Parfait_BugBugs'];
+        var typeAll = ['Roulage', 'Simobj_Normal', 'Simobj_Parfait'];
+        var typeAllNew = ['Prototype', 'SimObject', 'SimObject - Perfect Sensors'];
+        var bugsAll = ['bug0', 'bug1', 'bug2', 'bug3', 'bug4', 'bug5', 'bug6', 'bug7', 'bug8', 'bug9', 'bug10', 'bug11', 'bug12', 'bug13', 'bug14', 'bug16', 'bug17', 'bug19', 'bug20', 'bug21', 'bug22', 'bug24', 'bug25', 'bug26', 'bug27', 'bug28', 'bug29', 'bug30', 'bug31', 'bug32', 'bug35', 'bug36', 'bug37', 'bug38', 'bug39', 'bug40', 'bug41'];
+        var legendAll = ['Select All', 'bug0', 'bug1', 'bug2', 'bug3', 'bug4', 'bug5', 'bug6', 'bug7', 'bug8', 'bug9', 'bug10', 'bug11', 'bug12', 'bug13', 'bug14', 'bug16', 'bug17', 'bug19', 'bug20', 'bug21', 'bug22', 'bug24', 'bug25', 'bug26', 'bug27', 'bug28', 'bug29', 'bug30', 'bug31', 'bug32', 'bug35', 'bug36', 'bug37', 'bug38', 'bug39', 'bug40', 'bug41'];
+        var bugAllDescri = ["Bug N°0: Inappropriate Lines Number ", "Bug N°1: Fluctuation of Lines ", "Bug N°2:Incorrect Ego LaneAssignement", "Bug N°3: Incorrect Objet LaneAssignement", "Bug N°4: Disappearance of EgoPath", "Bug N°5: Fluctuation of EgoPath ", "Bug N°6: The EgoPath does not follow the curves ", "Bug N°7: Disappearance of ObjectPath", "Bug N°8: Inappropriate ObjectPath Modeling", "Bug N°9: Incorrect  Ego speed", "Bug N°10: Incorrect Object's speed ", "Bug N°11: Double detected object ", "Bug N°12: Undetected object by Fusion ", "Bug N°13: False AEB detection ", "Bug N°14: False ACC detection ", "Bug N°16:Inappropriate CIPV /TTC indicator ", "Bug N°17: Incorrect ACC Number [XX]", "Bug N°19: AEB Target fluctuation ", "Bug N°20: PB Statut", "Bug N°21: False positive object detection ", "Bug N°22: Inappropriate Lines modeling", "Bug N°24: Undetected AEB target", "Bug N°25: Undetected ACC target", "Bug N°26: Unseen detected object ", "Bug N°27: Incorrect ObjectPath for static object ", "BugN°28 : Fluctuation of object path", "Bug N°29: ACC Target fluctuation ", "Bug N°30:Inappropriate object position", "Bug N°31: EgoPath is a circle-like ", "Bug N°32: Object Fluctuation ", "Bug N°35: Undetected object by sensors", "Bug N°36: Fusion Crash", "Bug N°37: Undetected object by sensors", "Bug N°38: Incorrect EgoPath ", "Bug N°39: Bad Maneuver Prediction ", "BugN°40: Incorrect anchor point ", "BugN°41: Bad bounding box modeling "];
+        var legendBugAllDescri = ['Select All', "Bug N°0: Inappropriate Lines Number ", "Bug N°1: Fluctuation of Lines ", "Bug N°2:Incorrect Ego LaneAssignement", "Bug N°3: Incorrect Objet LaneAssignement", "Bug N°4: Disappearance of EgoPath", "Bug N°5: Fluctuation of EgoPath ", "Bug N°6: The EgoPath does not follow the curves ", "Bug N°7: Disappearance of ObjectPath", "Bug N°8: Inappropriate ObjectPath Modeling", "Bug N°9: Incorrect  Ego speed", "Bug N°10: Incorrect Object's speed ", "Bug N°11: Double detected object ", "Bug N°12: Undetected object by Fusion ", "Bug N°13: False AEB detection ", "Bug N°14: False ACC detection ", "Bug N°16:Inappropriate CIPV /TTC indicator ", "Bug N°17: Incorrect ACC Number [XX]", "Bug N°19: AEB Target fluctuation ", "Bug N°20: PB Statut", "Bug N°21: False positive object detection ", "Bug N°22: Inappropriate Lines modeling", "Bug N°24: Undetected AEB target", "Bug N°25: Undetected ACC target", "Bug N°26: Unseen detected object ", "Bug N°27: Incorrect ObjectPath for static object ", "BugN°28 : Fluctuation of object path", "Bug N°29: ACC Target fluctuation ", "Bug N°30:Inappropriate object position", "Bug N°31: EgoPath is a circle-like ", "Bug N°32: Object Fluctuation ", "Bug N°35: Undetected object by sensors", "Bug N°36: Fusion Crash", "Bug N°37: Undetected object by sensors", "Bug N°38: Incorrect EgoPath ", "Bug N°39: Bad Maneuver Prediction ", "BugN°40: Incorrect anchor point ", "BugN°41: Bad bounding box modeling "];
+
+
+
+    function findArray(Array, toFind) {
+            for (var i in Array) {
+                if (Array[i] == toFind) return true;
+            }
+            return false;
+        }
+
+    function datasFormat() {
+
+        for (var j in bugsAll) {
+            // console.log(bugsAll[j]);
+            dataToUse[bugsAll[j]] = [];
+            for (k in indiceAll) {
+                dataToUse[bugsAll[j]][indiceAll[k]] = [];
+                for (let i = 0; i < dataAnalyse_all.length; i++) {
+                    if (indiceAll[k] == dataAnalyse_all[i]['indice']) {
+                        dataToUse[bugsAll[j]][indiceAll[k]].push(dataAnalyse_all[i][bugsAll[j]]);
+                    }
+                }
+
+            }
+
+        }
+
+
+        // console.log(dataToUse);
+    }
+    function dataChartCreat(indice, nameChart, myChart) {
+        // var dataSelect = { 'bug0': false, 'bug1': false, 'bug2': false, 'bug3': false, 'bug4': false, 'bug5': false, 'bug6': false, 'bug7': false, 'bug8': false, 'bug9': false, 'bug10': false, 'bug11': false, 'bug12': false, 'bug13': false, 'bug14': false, 'bug16': false, 'bug17': false, 'bug19': false, 'bug20': false, 'bug21': false, 'bug22': false, 'bug24': false, 'bug25': false, 'bug26': false, 'bug27': false, 'bug28': false, 'bug29': false, 'bug30': false, 'bug31': false, 'bug32': false, 'bug35': false, 'bug36': false, 'bug37': false, 'bug38': false, 'bug39': false, 'bug40': false, 'bug41': false };
+        var dataSelect = { "Bug N°0: Inappropriate Lines Number ": false, "Bug N°1: Fluctuation of Lines ": false, "Bug N°2:Incorrect Ego LaneAssignement": false, "Bug N°3: Incorrect Objet LaneAssignement": false, "Bug N°4: Disappearance of EgoPath": false, "Bug N°5: Fluctuation of EgoPath ": false, "Bug N°6: The EgoPath does not follow the curves ": false, "Bug N°7: Disappearance of ObjectPath": false, "Bug N°8: Inappropriate ObjectPath Modeling": false, "Bug N°9: Incorrect  Ego speed": false, "Bug N°10: Incorrect Object's speed ": false, "Bug N°11: Double detected object ": false, "Bug N°12: Undetected object by Fusion ": false, "Bug N°13: False AEB detection ": false, "Bug N°14: False ACC detection ": false, "Bug N°16:Inappropriate CIPV /TTC indicator ": false, "Bug N°17: Incorrect ACC Number [XX]": false, "Bug N°19: AEB Target fluctuation ": false, "Bug N°20: PB Statut": false, "Bug N°21: False positive object detection ": false, "Bug N°22: Inappropriate Lines modeling": false, "Bug N°24: Undetected AEB target": false, "Bug N°25: Undetected ACC target": false, "Bug N°26: Unseen detected object ": false, "Bug N°27: Incorrect ObjectPath for static object ": false, "BugN°28 : Fluctuation of object path": false, "Bug N°29: ACC Target fluctuation ": false, "Bug N°30:Inappropriate object position": false, "Bug N°31: EgoPath is a circle-like ": false, "Bug N°32: Object Fluctuation ": false, "Bug N°35: Undetected object by sensors": false, "Bug N°36: Fusion Crash": false, "Bug N°37: Undetected object by sensors": false, "Bug N°38: Incorrect EgoPath ": false, "Bug N°39: Bad Maneuver Prediction ": false, "BugN°40: Incorrect anchor point ": false, "BugN°41: Bad bounding box modeling ": false };
+
+        var dataSeries = [];
+        var jj = {};
+        // console.log(dataToUse[bugsAll[0]]['Roulage']);
+        var maxBug = 0;
+        var maxBugName = bugsAll[0];
+        var maxValue = parseInt(dataToUse[bugsAll[0]][indice][version_all.length - 1]);
+        var countBug = 0;
+        var maxLocal = 0;
+
+        // console.log(maxValue);
+
+
+        for (var i in bugsAll) {
+            // console.log(i);
+            jj.i = {};
+            jj.i.name = bugAllDescri[i];
+            jj.i.type = 'line';
+            jj.i.data = dataToUse[bugsAll[i]][indice];
+
+            var dataO = jj.i.data;
+            //  console.log(version_all.length);
+            // console.log(jj.i.data);//["49", "0", "0"]
+
+            //所有数据中最大的
+            // maxLocal = parseFloat(dataO[0]);
+            // for (q in dataO) {
+            //     var compLocal= parseFloat(dataO[q]);
+            //         // console.log(compLocal);
+            //     if (maxLocal< compLocal) {
+            //         // console.log(dataO[q]);
+            //         maxLocal= compLocal;
+            //     }
+            //     }
+
+            //所有数据累加和
+            maxLocal = 0;
+            for (q in dataO) {
+                var compLocal = parseFloat(dataO[q]);
+                // console.log(compLocal);
+                maxLocal = maxLocal + compLocal;
+
+            }
+            // console.log(maxLocal);
+            // console.log(dataO[version_all.length - 1]);
+
+            // var dataO = jj.i.data;
+            // console.log(dataO[dataO.length - 1]);
+
+            //只比较最后一个数据
+            // maxLocal = parseFloat(dataO[dataO.length-1]);
+
+            if (maxValue < maxLocal) {
+                maxValue = maxLocal;
+                maxBug = i;
+                maxBugName = bugAllDescri[i];
+                // console.log(maxBug);
+                // console.log(maxBugName);
+                // maxLocal = 0;
+                // console.log(maxBugName);
+
+                // console.log(bugsAll[i]);
+                // maxBugName = 'bug'+ str(countBug);
+            }
+            countBug++;
+            dataSeries.push(jj.i);
+
+        }
+        // console.log(maxBug);
+        // console.log(maxBugName);
+        // console.log(maxValue);
+        countBug = countBug + 1;
+
+        jj.countBug = {};
+        jj.countBug.name = 'Select All';
+        jj.countBug.type = 'line';
+        dataSeries.push(jj.countBug);
+
+        dataSelect[maxBugName] = 'true';
+        // console.log(maxBugName);
+        // console.log(dataSelect);
+
+        dataSeries[maxBug]['markPoint'] = { symbol: 'pin', effect: { show: false, shadowBlur: 0 }, large: true, symbolSize: 77, itemStyle: { normal: { borderColor: '#fff', borderWidth: 1, label: { show: true, position: 'inside', textStyle: { fontSize: '11', color: 'white' } } } }, data: [{ type: 'max', name: 'MaxPoint' }] };
+        // console.log(dataSeries[maxBug]['data'][version_all.length - 1]);
+        for (var inum in dataSeries[maxBug]['data']) {
+            var num = new Number(dataSeries[maxBug]['data'][inum]);
+            dataSeries[maxBug]['data'][inum] = num.toFixed(3);
+        }
+
+        var option = {
+            title: {
+                text: nameChart
+            },
+            tooltip: {
+                trigger: 'item',
+            },
+            legend: {
+                type: 'scroll',
+                right: 2,
+                orient: 'vertical',
+                data: (function () {
+                    var list = [];
+                    for (var i in legendBugAllDescri) {
+                        list.push(legendBugAllDescri[i]);
+                    }
+                    return list;
+                })(),
+                selected: dataSelect
+
+            },
+            grid: {
+                top: 88,
+                bottom: 60,
+                left: 60,
+                right: 360,
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    // saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                //不同
+                data: version_all
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: dataSeries
+        };
+        // console.log(option);
+        myChart.setOption(option, true)
+        //全选处理逻辑
+        var selAll = 'Select All';
+        var selFlag = false;
+        myChart.on('legendselectchanged', function (params) {
+            //legend　全选操作
+            if (params.name == selAll) {
+                selFlag = !selFlag;//全选，全不选切换
+                var dynamicSelected = {};
+                //设置全选
+                for (var index in params.selected) {
+                    dynamicSelected[index] = selFlag;
+                }
+                //重绘echarts
+                myChart.setOption({
+                    legend: {
+                        selected: dynamicSelected
+                    }
+                });
+            }
+        });
+        // console.log(option);
+        return option;
+    }
+
+    function typeNameChange(type) {
+        var valueReturn = '';
+        switch (type) {
+            case 'Roulage':
+                valueReturn = 'Prototype';
+                break;
+
+            case 'Simobj_Normal':
+                valueReturn = 'SimObject';
+                break;
+
+            case 'Simobj_Parfait':
+                valueReturn = 'SimObject - Perfect Sensors';
+                break;
+
+        }
+        return valueReturn;
+    }
+    // var typeAll = ['Roulage', 'Simobj_Normal', 'Simobj_Parfait'];
+    // data: ['Prototype', 'SimObject', 'SimObject - Perfect Sensors']
+
+    function succRateFormat() {
+        for (var j in typeAll) {
+            // console.log(typeAll[j]);
+            succRate[typeNameChange(typeAll[j])] = [];
+            for (let i = 0; i < dataAnalyse_all.length; i++) {
+                // console.log(dataAnalyse_all[i]['success_rate']);
+                if (typeAll[j] == dataAnalyse_all[i]['indice']) {
+                    succRate[typeNameChange(typeAll[j])].push(dataAnalyse_all[i]['success_rate']);
+                }
+            }
+        }
+        // console.log(succRate);
+    }
+
+
+
+    function succRateChartCreat() {
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                // data: typeAllNew
+                data: typeAllNew
+                // var typeAll = ['Roulage', 'Simobj_Normal', 'Simobj_Parfait'];
+                // data: ['Prototype', 'SimObject', 'SimObject - Perfect Sensors']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                //不同
+                data: version_all
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: typeAllNew[0],
+                    type: 'line',
+                    data: succRate[typeAllNew[0]]
+                },
+                {
+                    name: typeAllNew[1],
+                    type: 'line',
+                    data: succRate[typeAllNew[1]]
+                },
+                {
+                    name: typeAllNew[2],
+                    type: 'line',
+                    data: succRate[typeAllNew[2]]
+                },
+
+            ]
+        };
+        // console.log(option);
+        return option;
+    }
+
+
+
+        var diSRDom = document.querySelector("#disrgram");
+        var diSR = echarts.init(diSRDom);
+
+        var diaDom = document.querySelector("#diagram");
+        var dibDom = document.querySelector("#dibgram");
+        var dicDom = document.querySelector("#dicgram");
+        var didDom = document.querySelector('#didgram');
+        // var dieDom = document.querySelector('#diegram');
+        var difDom = document.querySelector('#difgram');
+        var digDom = document.querySelector('#diggram');
+        var dihDom = document.querySelector('#dihgram');
+        var diiDom = document.querySelector('#diigram');
+        // var dijDom = document.querySelector('#dijgram');
+        var dikDom = document.querySelector('#dikgram');
+        var dilDom = document.querySelector('#dilgram');
+        var dimDom = document.querySelector('#dimgram');
+        var dinDom = document.querySelector('#dingram');
+        // var dioDom = document.querySelector('#diogram');
+
+        // 基于准备好的dom，初始化echarts实例
+            // var dia_Roulage = echarts.init(diaDom);
+            // var dia_Roulage_BugScenario = echarts.init(dibDom);
+            var diaRoulage = echarts.init(diaDom);
+            var diaRoulage_BugScenario = echarts.init(dibDom);
+            var diaRoulage_BugHeure = echarts.init(dicDom);
+            var diaRoulage_BugKm = echarts.init(didDom);
+            // var diaRoulage_BugBugs = echarts.init(dieDom);
+            var diaSimobj_Normal = echarts.init(difDom);
+            var diaSimobj_Normal_BugScenario = echarts.init(digDom);
+            var diaSimobj_Normal_BugHeure = echarts.init(dihDom);
+            var diaSimobj_Normal_BugKm = echarts.init(diiDom);
+            // var diaSimobj_Normal_BugBugs = echarts.init(dijDom);
+            var diaSimobj_Parfait = echarts.init(dikDom);
+            var diaSimobj_Parfait_BugScenario = echarts.init(dilDom);
+            var diaSimobj_Parfait_BugHeure = echarts.init(dimDom);
+            var diaSimobj_Parfait_BugKm = echarts.init(dinDom);
+        // var diaSimobj_Parfait_BugBugs = echarts.init(dioDom);
+
+
+        //==>==>==>==>==>==>==>==>==>主程序开始<==<==<==<==<==<==<==<==
+        ipcRenderer.on('dataEvolution', function (event, data) {
+            dataAnalyse_all = data;
+            // console.log(dataAnalyse_all);
+        })
+
+        ipcRenderer.on('versionAll', function (event, data) {
+            for (let i = 0; i < data.length; i++) {
+                if (!(findArray(version_all, data[i]['title']))) {
+                    version_all.push(data[i]['title']);
+                }
+            }
+            succRateFormat();
+            // console.log(version_all);
+            var diSRoption= succRateChartCreat();
+            diSR.setOption(diSRoption,true);
+
+            datasFormat();
+            dataChartCreat('Roulage', 'Number of bugs', diaRoulage);
+            dataChartCreat('Roulage_BugScenario', 'Bug per Scenario', diaRoulage_BugScenario);
+            dataChartCreat('Roulage_BugHeure', 'Bug per Hour', diaRoulage_BugHeure);
+            dataChartCreat('Roulage_BugKm', 'Bug per Km', diaRoulage_BugKm);
+            // dataChartCreat('Roulage_BugBugs', 'Proportion of Bug to All', diaRoulage_BugBugs);
+            dataChartCreat('Simobj_Normal', 'Roulage', diaSimobj_Normal);
+            dataChartCreat('Simobj_Normal_BugScenario', 'Bug per Scenario', diaSimobj_Normal_BugScenario);
+            dataChartCreat('Simobj_Normal_BugHeure', 'Bug per Hour', diaSimobj_Normal_BugHeure);
+            dataChartCreat('Simobj_Normal_BugKm', 'Bug per Km', diaSimobj_Normal_BugKm);
+            // dataChartCreat('Simobj_Normal_BugBugs', 'Proportion of Bug to All', diaSimobj_Normal_BugBugs);
+            dataChartCreat('Simobj_Parfait', 'Roulage', diaSimobj_Parfait);
+            dataChartCreat('Simobj_Parfait_BugScenario', 'Bug per Scenario', diaSimobj_Parfait_BugScenario);
+            dataChartCreat('Simobj_Parfait_BugHeure', 'Bug per Hour', diaSimobj_Parfait_BugHeure);
+            dataChartCreat('Simobj_Parfait_BugKm', 'Bug per Km', diaSimobj_Parfait_BugKm);
+            // dataChartCreat('Simobj_Parfait_BugBugs', 'Proportion of Bug to All', diaSimobj_Parfait_BugBugs);
+        })
+
+    </script>
+
+</body>
+
+</html>
